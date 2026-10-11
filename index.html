@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>From Paper to Screen: The Digital Preservation of Chinese Paper cutting</title>
+    <style>
+        *{
+            font-family: "Arial", serif;
+        }
+        *{margin:0;padding:0;box-sizing:border-box;font-family:"SimSun",serif;}
+        :root{
+            --red:#a61c1c;
+            --card-bg:#fffbf2;
+        }
+        /*导航栏固定顶部*/
+        nav{
+            background-color:var(--red);
+            position:sticky;
+            top:0;
+            z-index:99;
+        }
+        .nav-wrap{
+            max-width:1200px;
+            margin:0 auto;
+            display:flex;
+            flex-wrap:wrap;
+            justify-content:center;
+        }
+        .nav-wrap a{
+            color:#fff;
+            text-decoration:none;
+            padding:12px 16px;
+            display:block;
+        }
+        .nav-wrap a:hover{
+            background:rgba(255,255,255,0.2);
+        }
+        /*首页封面*/
+        .hero{
+            min-height:85vh;
+            background-color:#781616;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            color:white;
+            text-align:center;
+            padding:30px;
+        }
+        .hero h1{
+            font-size:2.3rem;
+            margin-bottom:14px;
+        }
+        .container{
+            max-width:1200px;
+            margin:0 auto;
+            padding:40px 20px;
+        }
+        /*档案卡片样式*/
+        .archive-card{
+            background:var(--card-bg);
+            border:1px solid #ddcdb8;
+            border-radius:10px;
+            padding:22px;
+            margin-bottom:24px;
+        }
+        .card-image-placeholder{
+            width:100%;
+            height:270px;
+            background:#e9dfcf;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:#666;
+            margin-bottom:12px;
+        }
+        /*核心：所有内容面板默认隐藏 */
+        .panel{
+            display:none;
+        }
+        /*只有active的面板才显示*/
+        .panel.active{
+            display:block;
+        }
+        /* 图片+表格行的容器：左图+文字，grid写在.img-row，不是img！ */
+        .img-row {
+        display: grid;
+        grid-template-columns: 100px 1fr;
+        gap:9px;
+        align-items: center;
+        }
+        .img-row img{
+        width:100%;
+        max-height:100px;
+        height:auto;
+        object-fit: contain;
+        }
+        /* 表格整体右对齐 */
+        table {
+        margin-left:auto;
+        margin-right:auto;
+        }
+        /* 单元格文字居中 */
+        table th, table td {
+        text-align:center;
+        word-wrap: break-word;
+        white-space: normal;
+        padding:12px;
+        }
+
+        /* 隔行换色：偶数行淡红，奇数行淡卡其 */
+        tbody tr:nth-child(odd){
+        background-color: #f2e9da; /* 淡卡其，匹配背景纸张色 */
+        }
+        tbody tr:nth-child(even){
+        background-color: #e4111168; /* 淡红色，剪纸浅红 */
+        }
+
+        /*图片填满占框*/
+        .card-image-placeholder img {
+        width:100%;
+        height:100%;
+        object-fit: contain;
+        }
+
+    </style>
+</head>
+<body>
+<!-- 顶部导航，永久固定 -->
+<nav>
+    <div class="nav-wrap">
+        <a data-target="panel-home">Cover Page</a>
+        <a data-target="panel-about">About this Website</a>
+        <a data-target="panel-works">Archive of works</a>
+        <a data-target="panel-process">Making and Digital Documentation</a>
+        <a data-target="panel-cross">Cross Cultural Communication</a>
+        <a data-target="panel-findings">Research Findings</a>
+        <a data-target="panel-source">Reference</a>
+    </div>
+</nav>
+
+<!-- 【首页面板：默认打开】 -->
+<div id="panel-home" class="panel active">
+    <div class="hero">
+        <h1>From Paper to Screen: The Digital Preservation of Chinese Paper cutting</h1>
+        <p>A comprehensive digital repository dedicated to documenting the artisanal heritage and cultural significance of jianzhi art during the lunar new year.</p>
+    </div>
+    <div class="container">
+        <h2>About this Website</h2><br><br>
+        <p><strong>Why fu and zodiac paper-cuts</strong><br>In 2009 UNESCO inscribed "Chinese paper-cut" on the Representative List of the Intangible Cultural Heritage of Humanity. Its entry says paper-cuts are used to decorate windows, beds and ceilings and to mark weddings, birthdays and other celebrations (UNESCO, 2009). Pasting window flowers at Spring Festival is one of these uses; one craftsperson calls it "not just a form, but a culture" (China.org.cn, 2018). The fu character and the zodiac animals are both common Spring Festival subjects, their patterns are easy to recognise, and a lot of online material exists on them. That is why we chose them.<br><br><strong>Scope of the background sources</strong><br>UNESCO's entry covers Chinese paper-cutting as a whole, not just Spring Festival paper-cuts, so we use it only for background. Our analysis of Spring Festival paper-cuts rests on the fu and zodiac works and the cases we collected.<br><br><strong>How we selected sources</strong><br>We preferred sources with a named institution or author, works whose origin can be traced, and works whose source explains their use or meaning. Every claim about meaning is attributed to a source. Our own observations are kept separate.<br><br><strong>Why we include works, making materials and cross-regional cases</strong><br>A collection of finished works does not show how they are made, and a collection of making processes does not show how the paper-cuts are presented to different readers. We need all three to answer what is preserved and what changes when it is shared.<br><br><strong>How a digital archive helps preserve culture</strong><br>UNESCO notes that paper-cutting is mostly passed on within families, often from mother to daughter, starting in childhood (UNESCO, 2009), and one craftsperson says "many people no longer cut" (China.org.cn, 2018). Much of this knowledge lives in people's hands, and an archive cannot replace learning to cut by hand. It can do three smaller things. These are our own judgements, not conclusions from the sources.<br>- It keeps a work, its occasion of use, its meaning and its source in one record. Window flowers are festival decorations, so the pieces themselves may not last, but a record can last and can be checked.<br>- It shows what existing sources record and what they leave out. Both fu reports we collected describe the occasion and the meaning, and neither explains the pattern or the cutting method.<br>- It puts material from different regions and media into one format, which makes comparison easier.<br><br><strong>What value the website may offer</strong><br>Once built, the website may be useful to three groups. These are possible uses only. We have not tested the site with real users.<br>- Students and teachers learning about Spring Festival or paper-cutting can find sourced works and see what each source actually says.<br>- Curious general readers, including those unfamiliar with Chinese customs, can see fu and zodiac paper-cuts and how different regions describe them in one place.<br>- People building similar archives or doing similar research can reuse or compare our selection method, our archive card format and our source list.<br><br><strong>Limitations</strong><br>Our sample is small and does not represent all paper-cuts or all regions.</p>
+    </div>
+</div>
+
+<!-- 【关于本档案面板】 -->
+<div id="panel-about" class="panel">
+    <div class="container">
+        <h2>About this Website</h2>
+        <p><strong>Why fu and zodiac paper-cuts</strong><br>In 2009 UNESCO inscribed "Chinese paper-cut" on the Representative List of the Intangible Cultural Heritage of Humanity. Its entry says paper-cuts are used to decorate windows, beds and ceilings and to mark weddings, birthdays and other celebrations (UNESCO, 2009). Pasting window flowers at Spring Festival is one of these uses; one craftsperson calls it "not just a form, but a culture" (China.org.cn, 2018). The fu character and the zodiac animals are both common Spring Festival subjects, their patterns are easy to recognise, and a lot of online material exists on them. That is why we chose them.<br><br><strong>Scope of the background sources</strong><br>UNESCO's entry covers Chinese paper-cutting as a whole, not just Spring Festival paper-cuts, so we use it only for background. Our analysis of Spring Festival paper-cuts rests on the fu and zodiac works and the cases we collected.<br><br><strong>How we selected sources</strong><br>We preferred sources with a named institution or author, works whose origin can be traced, and works whose source explains their use or meaning. Every claim about meaning is attributed to a source. Our own observations are kept separate.<br><br><strong>Why we include works, making materials and cross-regional cases</strong><br>A collection of finished works does not show how they are made, and a collection of making processes does not show how the paper-cuts are presented to different readers. We need all three to answer what is preserved and what changes when it is shared.<br><br><strong>How a digital archive helps preserve culture</strong><br>UNESCO notes that paper-cutting is mostly passed on within families, often from mother to daughter, starting in childhood (UNESCO, 2009), and one craftsperson says "many people no longer cut" (China.org.cn, 2018). Much of this knowledge lives in people's hands, and an archive cannot replace learning to cut by hand. It can do three smaller things. These are our own judgements, not conclusions from the sources.<br>- It keeps a work, its occasion of use, its meaning and its source in one record. Window flowers are festival decorations, so the pieces themselves may not last, but a record can last and can be checked.<br>- It shows what existing sources record and what they leave out. Both fu reports we collected describe the occasion and the meaning, and neither explains the pattern or the cutting method.<br>- It puts material from different regions and media into one format, which makes comparison easier.<br><br><strong>What value the website may offer</strong><br>Once built, the website may be useful to three groups. These are possible uses only. We have not tested the site with real users.<br>- Students and teachers learning about Spring Festival or paper-cutting can find sourced works and see what each source actually says.<br>- Curious general readers, including those unfamiliar with Chinese customs, can see fu and zodiac paper-cuts and how different regions describe them in one place.<br>- People building similar archives or doing similar research can reuse or compare our selection method, our archive card format and our source list.<br><br><strong>Limitations</strong><br>Our sample is small and does not represent all paper-cuts or all regions.</p>
+    </div>
+</div>
+
+<!--【作品档案面板】 -->
+<div id="panel-works" class="panel">
+    <div class="container">
+        <h2>Archive of works</h2>
+        <h3>Paper Cutting of the Character Fu</h3>
+        <div class="archive-card">
+            <div class="card-image-placeholder">【此处替换：福字作品图片】</div>
+            <h4>作品名称：待填写</h4>
+            <p>作品简介：待填写</p>
+            <p class="source-note">来源信息：待填写（作者、机构、原始链接）</p>
+        </div>
+        <h3>Chinese Zodiac Paper Cutting</h3>
+        <!-- 第1张生肖剪纸卡片 -->
+        <div class="archive-card">
+            <div class="card-image-placeholder">
+                <img src="https://imagetourl.im/api/storage/file?key=anon%2F-%2F8208282880293-237508d4-6f2b-4326-87bc-23557a1bcf24-dd67a30e158b730879216424e4a63925.jpg" alt="Rabbit papercut">
+            </div>
+            <h4>Artwork Name: Rabbit — Mao Tu Zhao Feng Nian (《卯兔兆丰年》)</h4>
+            <p><strong>Artwork description:</strong> Created for the Year of the Rabbit, this paper-cut shows rabbits celebrating a harvest. Zheng Feiyan explains that the rabbit holding wheat ears represents a good harvest year after year.</p>
+            <p class="source-note"><strong>Source information:</strong> <br>- Artist and image creator: Zheng Feiyan (郑飞雁)<br>- Origin: Dingbian, Shaanxi<br>- Publishing source: Cultural Arts News (文化艺术报), published on Sohu<br>- Page date: December 4, 2022<br>- Original page and image: [郑飞雁：《卯兔兆丰年》剪纸创作谈](https://www.sohu.com/a/613513612_556618)<br>- In-text citation: (Zheng, 2022)</p>
+        </div>
+        <!-- 第2张生肖剪纸卡片 -->
+        <div class="archive-card">
+            <div class="card-image-placeholder">
+                <img src="https://imagetourl.im/api/storage/file?key=anon%2F-%2F8208282839348-d43c946f-7942-49a8-ad27-d231b393bd62-f8df16931aa8ae826e99732ae699ca7d.jpg" alt="Sheep papercut">
+            </div>
+            <h4>Artwork Name: Sheep — San Yang Kai Tai (《三羊开泰》)</h4>
+            <p><strong>Artwork description:</strong> The design uses sheep and 24 blades of grass. The artwork page explains that the grass represents a wish for sufficient food and clothing throughout the year’s 24 solar terms.</p>
+            <p class="source-note"><strong>Source information:</strong> <br>- Artist: Zhang Xiaolin (张晓林)<br>- Origin: Beijing<br>- Publishing institution and image source: Beijing Jianwujie Culture Co., Ltd. (北京剪无界文化有限公司)<br>- Page date: February 26, 2020<br>- Original artwork page and image: [《三羊开泰》作品页](https://www.jianwujie.com/projects/sykt.html)<br>- Artist attribution: The institution’s [Zhang Xiaolin profile](https://www.jianwujie.com/helps/zxl.html) identifies San Yang Kai Tai as his work.<br>- In-text citation for the artwork page: (Beijing Jianwujie Culture Co., Ltd., 2020)</p>
+        </div>
+        <!-- 第3张生肖剪纸卡片 -->
+        <div class="archive-card">
+            <div class="card-image-placeholder">
+                <img src="https://cdn.phototourl.com/member/2026-10-11-5bec7751-e7c1-416b-8ca0-6b282d8ca9e5.jpg" alt="Snake papercut">
+            </div>
+            <h4>Artwork Name: Snake and rabbit — She Pan Tu (《蛇盘兔》)</h4>
+            <p><strong>Artwork description:</strong> Zhang Jie combines a snake and a rabbit, drawing on the folk saying “蛇盘兔，必定富” to express wishes for wealth and good fortune.</p>
+            <p class="source-note"><strong>Source information:</strong> <br>- Artist: Zhang Jie (张洁)<br>- Origin: Shanghai<br>- Publishing institution: Shanghai Xuhui (上海徐汇), on The Paper<br>- Page date: February 4, 2025<br>- Original page and image: [“上海剪纸”让“年味”UP！](https://thirdpage.thepaper.cn/h5/jrtt/30081068)<br>- In-text citation: (Shanghai Xuhui, 2025)</p>
+        </div>
+    </div>
+</div>
+
+<!--【制作与数字记录面板】 -->
+<div id="panel-process" class="panel">
+    <div class="container">
+        <h2>Making and Digital Documentation</h2>
+        <p>Digital sources record different aspects of paper-cutting. This section compares a photograph of Li Shoubai’s rabbit paper-cut, Scarlett PANG’s illustrated rat tutorial, and Pika Shuwu’s snake video. Together, they show how a finished image, step-by-step illustrations, and moving footage document appearance and technique—and where further explanation is needed (Pika Shuwu, 2020; Scarlett PANG, 2026; Sina, 2023).</p>
+          <!-- 上面的表格粘贴在这里 -->
+<table border="1" cellpadding="10" style="width:90%; border-collapse: collapse;">
+  <thead>
+    <tr>
+      <th>Selected source</th>
+      <th>What it records</th>
+      <th>What remains unclear</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <!-- 第一行：左侧兔子剪纸图片 -->
+      <td>
+        <div class="img-row">
+          <img src="https://imagetourl.im/api/storage/file?key=anon%2F-%2F8208285039712-90b95470-713b-4c60-a883-87c0294cc4b0-b4f2e98b13b2d9a3acceaa27d711743b.jpg" alt="Rabbit paper-cut">
+          <div>Finished-work photograph<br> Qian Tu Si Jin<br> (Sina, 2023)</div>
+        </div>
+      </td>
+      <td>The completed rabbit pattern and its<br> visual details.</td>
+      <td>The cutting steps, hand movements, and<br> motif’s meaning are not explained on<br> this page.</td>
+    </tr>
+    <tr>
+      <!-- 第二行：鼠剪纸图片 -->
+      <td>
+        <div class="img-row">
+          <img src="https://imagetourl.im/api/storage/file?key=anon%2F-%2F8208284895753-e494a34d-5248-4bd5-b32a-40d5d3757dc8-8e67fe2c0216838decc1dbdf4e7364d3.jpg" alt="Rat paper-cut tutorial">
+          <div>Illustrated tutorial<br> Rat Zodiac Paper-Cut<br> (Scarlett PANG, 2026)</div>
+        </div>
+      </td>
+      <td>Pattern designs, folding and cutting<br> steps, tool tips, and the finished work.</td>
+      <td>Still images do not show continuous<br> hand movements; the post does not<br> explain the motif’s cultural meaning.</td>
+    </tr>
+    <tr>
+      <!-- 第三行：蛇剪纸图片 -->
+      <td>
+        <div class="img-row">
+          <img src="https://imagetourl.im/api/storage/file?key=anon%2F-%2F8208284863045-801b1f30-91c4-483b-b72f-37720df51265-3cddd2e8872d771a7e564744f4a88c53.jpg" alt="Snake paper-cut video">
+          <div>Video tutorial<br> Chinese Zodiac The Snake<br> (Pika Shuwu, 2020)</div>
+        </div>
+      </td>
+      <td>Visible tracing and cutting movements as<br> the snake pattern takes shape.</td>
+      <td>The webpage description does not<br> explain the motif’s meaning or its festival<br> use.</td>
+    </tr>
+  </tbody>
+</table>
+        <p><strong>What the comparison shows</strong></p>
+        <p>The photograph allows viewers to examine the finished rabbit design, but it cannot show the order in which the paper was cut. The illustrated tutorial makes the rat paper-cut easier to follow by showing patterns and successive steps, although movement between those steps remains invisible. In the snake video, viewers can observe the maker’s hands while the pattern is drawn and cut. Its webpage description, however, gives no cultural explanation of the snake motif. These observations concern these three sources; they do not mean that photographs or videos can never include such explanations. A caption, interview, or narration could add them. By linking different forms of documentation, this archive gives visitors a fuller view of appearance and technique. Additional information from artists or reliable cultural sources is still needed to explain why the motifs matter.<p>
+    </div>
+</div>
+
+<!--【跨文化传播面板】 -->
+<div id="panel-cross" class="panel">
+    <div class="container">
+        <h2>Cross Cultural Communication</h2><br><br>
+        <p><strong>Why compare these cases</strong><br><br>A paper-cut can travel, but its meaning may need translation. We compare three presentations from China, the United Kingdom and the United States to see how publishers explain Chinese paper cutting to different audiences. The Chinese and British examples both discuss fish and abundance; the American example adds a comparison of teaching methods through window flowers and the character for Spring. These are related traditions, not identical objects. Our question is how language, background information and opportunities to participate change across these settings.</p><br><br>
+        <h3>Paper-Cut Sources in the UK and the US</h3>
+        <table border="1" cellpadding="10" style="width:90%; margin: 20px auto; border-collapse: collapse;">
+        <!-- 英国资料 -->
+        <tbody>
+            <tr style="background-color:#f2e9da;">
+            <th style="width:22%;">Country / Publisher</th>
+            <td>United Kingdom</td>
+            </tr>
+            <tr>
+            <th>Authors & Region</th>
+            <td>Bryan Sitch, Naomi Kashiwagi and Fang Zong, on Manchester Museum’s Hello Future blog. Manchester, United Kingdom.</td>
+            </tr>
+            <tr style="background-color:#f8e4e4;">
+            <th>Date</th>
+            <td>October 21, 2021.</td>
+            </tr>
+            <tr>
+            <th>Audience</th>
+            <td>English-reading museum followers, inferred from the blog; Chinese university students are documented contributors.</td>
+            </tr>
+            <tr style="background-color:#f8e4e4;">
+            <th>Language</th>
+            <td>English, with Chinese characters and pronunciation.</td>
+            </tr>
+            <tr>
+            <th>Patterns and making knowledge</th>
+            <td>A fish paper-cut introduces the sound connection between fish (鱼, yú) and surplus (余, yú). The account also includes a student-made Cowherd and Weaver Girl paper-cut.</td>
+            </tr>
+            <tr style="background-color:#f8e4e4;">
+            <th>Source Link</th>
+            <td><a href="https://mmhellofuture.wordpress.com/2021/10/21/encountering-the-phoenix-and-other-things/" target="_blank">https://mmhellofuture.wordpress.com/2021/10/21/encountering-the-phoenix-and-other-things/</a></td>
+            </tr>
+            <!-- ✅ 新增图片行 -->
+            <tr>
+                <th>Image</th>
+                <td><img src="https://mmhellofuture.wordpress.com/wp-content/uploads/2021/10/fish-paper-cut.jpg" alt="Fish paper-cut from Manchester Museum" style="max-width:320px; height:auto;"></td>
+            </tr>
+        </tbody>
+        </table>
+
+          <p>A fish paper-cut discussed in Manchester Museum’s consultation account.<br>
+            Photo: Bret Gaunt, Derbyshire County Council – Buxton Museum and Art Gallery. Published on Hello Future.</p>
+
+        <br><br>
+
+        <table border="1" cellpadding="10" style="width:90%; margin: 20px auto; border-collapse: collapse;">
+        <!-- 美国资料 -->
+        <tbody>
+            <tr style="background-color:#f2e9da;">
+            <th style="width:22%;">Country / Publisher</th>
+            <td>United States</td>
+            </tr>
+            <tr>
+            <th>Authors & Region</th>
+            <td>Museum of Arts and Design. New York City, United States.</td>
+            </tr>
+            <tr style="background-color:#f8e4e4;">
+            <th>Date</th>
+            <td>Workshop advertised for February 13, 2010; webpage publication date not stated.</td>
+            </tr>
+            <tr>
+            <th>Audience</th>
+            <td>Drop-in museum visitors and beginner participants, inferred from the activity format.</td>
+            </tr>
+            <tr style="background-color:#f8e4e4;">
+            <th>Language</th>
+            <td>English webpage; Chinese–English interpretation advertised for the workshop.</td>
+            </tr>
+            <tr>
+            <th>Patterns and making knowledge</th>
+            <td>Repeated folding and cutting to make window flowers and the character for Spring, connected to Lunar New Year.</td>
+            </tr>
+            <tr style="background-color:#f8e4e4;">
+            <th>Source Link</th>
+            <td><a href="https://madmuseum.org/events/think-global-cut-local" target="_blank">https://madmuseum.org/events/think-global-cut-local</a></td>
+            </tr>
+            <!-- ✅ 新增图片行 -->
+            <tr>
+                <th>Image</th>
+                <td><img src="https://madmuseum.org/sites/default/files/styles/5_x_3/public/2011/02/paper_cutting.ashx_.jpg" alt="Auspicious character paper-cut for MAD workshop" style="max-width:320px; height:auto;"></td>
+            </tr>
+        </tbody>
+        </table>
+
+        <br>
+
+        <p>Auspicious-character paper-cut used to illustrate MAD’s workshop announcement.<br>
+        Image source: Museum of Arts and Design. Creator and image date not stated.</p>
+
+    </div>
+</div>
+
+<!--【研究发现面板】 -->
+<div id="panel-findings" class="panel">
+    <div class="container">
+        <h2>Research Findings</h2>
+        <p>【待成员6提交内容】</p>
+    </div>
+</div>
+
+<!--【资料来源面板】 -->
+<div id="panel-source" class="panel">
+    <div class="container">
+        <h2>Reference</h2>
+        <p>【待成员6提交APA7参考文献】</p>
+    </div>
+</div>
+
+<script>
+// 切换面板JS，不需要修改
+const navLinks = document.querySelectorAll(".nav-wrap a");
+const panels = document.querySelectorAll(".panel");
+
+navLinks.forEach(link=>{
+    link.onclick = function(e){
+        e.preventDefault();
+        const targetId = this.getAttribute("data-target");
+        panels.forEach(p=>p.classList.remove("active"));
+        document.getElementById(targetId).classList.add("active");
+        window.scrollTo(0,0); //切换面板自动滚回页面顶部
+    }
+})
+</script>
+
+</body>
+</html>
