@@ -39,7 +39,12 @@
         /*首页封面*/
         .hero{
             min-height:85vh;
-            background-color:#781616;
+            /* background-color:#781616; 注释掉原来红色纯色 */
+            background-image: url("https://img.remit.ee/i/5sw0qdCvRGxU");
+            background-size: cover;       /*图片铺满容器*/
+            background-position: center;  /*图片居中*/
+            background-repeat: no-repeat;
+            position: relative; /*必须开启，遮罩要基于它定位*/
             display:flex;
             flex-direction:column;
             align-items:center;
@@ -48,17 +53,31 @@
             text-align:center;
             padding:30px;
         }
+        /* 半透明黑色遮罩，让白色文字更清晰 */
+        .hero::before{
+            content:"";
+            position:absolute;
+            inset:0;
+            background-color:rgba(0,0,0,0.55); /*0.55透明度，数字越大越暗*/
+            z-index:1;
+        }
+        /* 把文字内容提升层级，显示在遮罩上面 */
+        .hero > *{
+            position:relative;
+            z-index:2;
+        }
         .hero h1{
             font-size:2.3rem;
             margin-bottom:14px;
         }
-        .container{
+         .container{
             max-width:1200px;
             margin:0 auto;
             padding:40px 20px;
         }
+
         /*档案卡片样式*/
-        .archive-card{
+        /*.archive-card{
             background:var(--card-bg);
             border:1px solid #ddcdb8;
             border-radius:10px;
@@ -74,7 +93,64 @@
             justify-content:center;
             color:#666;
             margin-bottom:12px;
+        }原表格代码*/
+        .archive-card {
+            display: flex;
+            gap: 22px;
+            align-items: stretch;
+            background: #fffbf2;
+            border: 1px solid #d9c8b4;
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 24px;
         }
+
+        .card-image-placeholder {
+            width: 260px;
+            height: 260px;
+            flex-shrink: 0; /* 固定图片框，不会被压缩 */
+            background-color: #e9dfcf;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .card-image-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .card-text {
+            flex: 1; /* 文字占剩下全部宽度 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* 垂直方向居中（上下居中） */
+            text-align: center;      /* 水平全部文字居中（左右居中） */
+            gap: 12px;
+        }
+
+            /* 移动端：小屏幕变回上下布局 */
+        @media (max-width:700px) {
+            .archive-card {
+                flex-direction: column;
+            }
+            .card-image-placeholder {
+                width: 100%;
+                height: 260px;
+            }
+            }
+
+        /* 原有文字样式，保留，不用删（如果已有就不用重复粘贴） */
+        .card-text h3 {
+            margin-top: 0;
+            color: #a61c1c;
+        }
+        .source-note {
+            font-size: 0.9rem;
+            color: #555;
+            margin-top:10px;
+        }
+
         /*核心：所有内容面板默认隐藏 */
         .panel{
             display:none;
@@ -124,6 +200,121 @@
         object-fit: contain;
         }
 
+                /* ==========世界剪纸地图新增样式========== */
+        .map-wrap{
+            position: relative;
+            max-width: 1440px;
+            margin:0 auto;
+        }
+        .world-map-img{
+            width:100%;
+            display:block;
+            border:1px solid #999;
+        }
+        /* 地图标记点 */
+        .marker{
+            width:16px;
+            height:16px;
+            background:#a61c1c;
+            border-radius:50%;
+            position:absolute;
+            cursor:pointer;
+            border:2px solid white;
+            box-shadow:0 0 4px #000;
+            transition: transform 0.2s;
+            z-index:10;
+        }
+        .marker:hover{
+            transform: scale(1.4);
+        }
+        .marker span{
+            position:absolute;
+            top:-24px;
+            left:50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            font-size:13px;
+            color:#222;
+            background:rgba(255,255,255,0.85);
+            padding:2px 6px;
+            border-radius:3px;
+        }
+        /* 遮罩层，背景虚化 */
+        .mask{
+            position:fixed;
+            inset:0;
+            background:rgba(0,0,0,0.55);
+            backdrop-filter: blur(6px);
+            display:none;
+            z-index:999;
+        }
+        /* 弹窗样式 */
+        .popup{
+            position:fixed;
+            width: min(620px, 92%);
+            max-height:85vh;
+            overflow-y:auto;
+            background:#fffbf2;
+            border:1px solid #ddcdb8;
+            border-radius:12px;
+            padding:24px;
+            z-index:1000;
+            display:none;
+            top:50%;
+            left:50%;
+            transform: translate(-50%, -50%);
+        }
+        .popup-header{
+            display:flex;
+            justify-content: space-between;
+            align-items:center;
+            margin-bottom:16px;
+        }
+        .popup-title{
+            font-size:22px;
+            font-weight:bold;
+            color:#a61c1c;
+        }
+        .close-btn{
+            width:32px;
+            height:32px;
+            border-radius:50%;
+            border:none;
+            background:#e9dfcf;
+            font-size:22px;
+            cursor:pointer;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+        .close-btn:hover{
+            background:#ddcdb8;
+        }
+        .popup-img{
+            width:100%;
+            max-height:320px;
+            object-fit:contain;
+            margin-bottom:16px;
+            border-radius:8px;
+        }
+        .popup-desc{
+            line-height:1.7;
+            font-size:16px;
+            color:#444;
+        }
+        .popup-video{
+            width:100%;
+            max-height:320px;
+            border-radius:8px;
+        }
+        .popup-youtube-iframe{
+            width:100%;
+            height:320px;
+            border-radius:8px;
+            border:none;
+            margin-bottom:16px;
+        }
+
 
     </style>
 </head>
@@ -131,12 +322,10 @@
 <!-- 顶部导航，永久固定 -->
 <nav>
     <div class="nav-wrap">
-        <a data-target="panel-home">Cover Page</a>
-        <a data-target="panel-about">About this Website</a>
+        <a data-target="panel-home">Welcome</a>
         <a data-target="panel-works">Archive of works</a>
         <a data-target="panel-process">Making and Digital Documentation</a>
         <a data-target="panel-cross">Cross Cultural Communication</a>
-        <a data-target="panel-findings">Research Findings</a>
         <a data-target="panel-source">Reference</a>
     </div>
 </nav>
@@ -144,7 +333,7 @@
 <!-- 【首页面板：默认打开】 -->
 <div id="panel-home" class="panel active">
     <div class="hero">
-        <h1>From Paper to Screen: The Digital Preservation of Chinese Paper cutting</h1>
+        <h1>From Paper to Screen:<br> The Digital Preservation of Chinese Paper cutting</h1><br><br>
         <p>A comprehensive digital repository dedicated to documenting the artisanal heritage and cultural significance of jianzhi art during the lunar new year.</p>
     </div>
     <div class="container">
@@ -154,12 +343,7 @@
 </div>
 
 <!-- 【关于本档案面板】 -->
-<div id="panel-about" class="panel">
-    <div class="container">
-        <h2>About this Website</h2>
-        <p><strong>Why fu and zodiac paper-cuts</strong><br>In 2009 UNESCO inscribed "Chinese paper-cut" on the Representative List of the Intangible Cultural Heritage of Humanity. Its entry says paper-cuts are used to decorate windows, beds and ceilings and to mark weddings, birthdays and other celebrations (UNESCO, 2009). Pasting window flowers at Spring Festival is one of these uses; one craftsperson calls it "not just a form, but a culture" (China.org.cn, 2018). The fu character and the zodiac animals are both common Spring Festival subjects, their patterns are easy to recognise, and a lot of online material exists on them. That is why we chose them.<br><br><strong>Scope of the background sources</strong><br>UNESCO's entry covers Chinese paper-cutting as a whole, not just Spring Festival paper-cuts, so we use it only for background. Our analysis of Spring Festival paper-cuts rests on the fu and zodiac works and the cases we collected.<br><br><strong>How we selected sources</strong><br>We preferred sources with a named institution or author, works whose origin can be traced, and works whose source explains their use or meaning. Every claim about meaning is attributed to a source. Our own observations are kept separate.<br><br><strong>Why we include works, making materials and cross-regional cases</strong><br>A collection of finished works does not show how they are made, and a collection of making processes does not show how the paper-cuts are presented to different readers. We need all three to answer what is preserved and what changes when it is shared.<br><br><strong>How a digital archive helps preserve culture</strong><br>UNESCO notes that paper-cutting is mostly passed on within families, often from mother to daughter, starting in childhood (UNESCO, 2009), and one craftsperson says "many people no longer cut" (China.org.cn, 2018). Much of this knowledge lives in people's hands, and an archive cannot replace learning to cut by hand. It can do three smaller things. These are our own judgements, not conclusions from the sources.<br>- It keeps a work, its occasion of use, its meaning and its source in one record. Window flowers are festival decorations, so the pieces themselves may not last, but a record can last and can be checked.<br>- It shows what existing sources record and what they leave out. Both fu reports we collected describe the occasion and the meaning, and neither explains the pattern or the cutting method.<br>- It puts material from different regions and media into one format, which makes comparison easier.<br><br><strong>What value the website may offer</strong><br>Once built, the website may be useful to three groups. These are possible uses only. We have not tested the site with real users.<br>- Students and teachers learning about Spring Festival or paper-cutting can find sourced works and see what each source actually says.<br>- Curious general readers, including those unfamiliar with Chinese customs, can see fu and zodiac paper-cuts and how different regions describe them in one place.<br>- People building similar archives or doing similar research can reuse or compare our selection method, our archive card format and our source list.<br><br><strong>Limitations</strong><br>Our sample is small and does not represent all paper-cuts or all regions.</p>
-    </div>
-</div>
+
 
 <!--【作品档案面板】 -->
 <div id="panel-works" class="panel">
@@ -170,27 +354,29 @@
         <div class="archive-card">
             <!-- 套上你写好样式的容器 class：card-image-placeholder -->
             <div class="card-image-placeholder">
-                <img src="https://tse1.mm.bing.net/th/id/OIP.rXkx7ScQFSlNY8w-btrxxQHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Fu paper-cut artwork 1">
+                <img src="https://img.remit.ee/i/EIHBY91TzPSc" alt="Fu paper-cut artwork 1">
             </div>
-            <h4>Artwork Name: Qiaoshou jian chu xingfu hua (Skillful Hands Cut Flowers of Happiness)</h4>
-            <p><strong>Artwork description:</strong> The report features An Meixia, Tianshui Gansu paper-cutting intangible cultural heritage inheritor, creating fu paper-cuts for Spring Festival. Window flower cutting is a Qin’an County Lunar New Year custom, symbolising good fortune and wishes for a better life. Red fu paper-cuts enhance festive atmosphere. Her 2020 work Fu you Cangsheng won first prize at the 10th Gansu "Hundred Flowers Award". This source contextualises fu within local Spring Festival traditions, yet it does not describe patterns, paper size or cutting techniques, and lacks an image of the finished fu artwork.</p>
-        <p class="source-note"><strong>Source information:</strong> <br>- Title: Qiaoshou jian chu xingfu hua [Skillful hands cut flowers of happiness]<br>- Authors: Bai Yongping and He Xitian<br>- Publisher: Gansu Daily, reposted by Xinhua Net Gansu channel<br>- Date: 15 February 2024<br>- In-text citation: (Bai & He, 2024)</p>
+            <h4>Artwork Name: "Blessings Arrive Immediately" (Ma Shang You Fu)</h4>
+            <p><strong>Artwork description:</strong> This paper-cut is created by inheritor Cao Jing. The central element is the Chinese character "Fu" inside a round frame. A horse, lotus and koi fish are carved around the fu character. The horse symbolises good fortune coming soon, koi fish represent surplus and wealth. The symmetrical layout is a classic style of Shaanxi folk paper-cut, carrying people’s wishes for happiness and prosperity.</p>
+        <p class="source-note"><strong>Source information:</strong> <br>- Artist: Cao Jing (曹静)<br>- Origin: Shaanxi, China<br>- Publishing institution and image source: Weinan Culture and Tourism Bureau<br>- Date: January 27, 2026<br>- In-text citation: Weinan Culture and Tourism Bureau, 2026</p>
     </div>
         <!-- 第2张福字剪纸卡片 -->
         <div class="archive-card">
             <div class="card-image-placeholder">
-                <img src="https://cdn.phototourl.com/member/2026-10-11-4bb8ae2b-f1ff-4cd2-9f37-af24142d75cc.webp" alt="Fu paper-cut artwork 2">
+                <img src="https://img.remit.ee/i/MqKvG9FgynnP" alt="Fu paper-cut artwork 2">
             </div>
-            <h4><strong>Artwork Name:</strong> Zhang Yueguang's Tianxia Diyi Fu ("The World's First Fu")</h4>
-            <p><strong>Artwork description:</strong> The article says fu paper-cuts are popular in Jining, Shandong. Zhang Yueguang, a city-level heritage inheritor, says: "My Tianxia Diyi Fu cuts out its auspicious meaning, and it can be pasted as a window flower or mounted as a hanging or display piece" (our translation). It also describes the fu character as carrying people's "simple wish" for plenty, health and safety in the new year.</p>
-            <p class="source-note"><strong>Source information:</strong> "Shenyi chenggong! Kan chunjie de N zhong dakai fangshi" [Inscription success! N ways to open the Spring Festival], Farmers' Daily, 10 December 2024, reposted by the Xinhua Net app.</p>
+            <h4><strong>Artwork Name:</strong> "Fu Gui Fu" (Prosperity Fu)</h4>
+            <p><strong>Artwork description:</strong> This paper-cut is created by inheritor Zhou Dongmei. The work centers on the Chinese character "Fu", decorated with koi fish and peony flowers. The peony symbolises wealth and honour, while koi fish represent surplus and good fortune. It adopts the unique Pucheng paper-cut style of "painting within characters", conveying people’s wishes for wealth and a prosperous life.</p>
+            <p class="source-note"><strong>Source information:</strong> - Artist: Zhou Dongmei (周冬梅)<br>- Date: December 4, 2023<br>- In-text citation: Southeast Net, 2023</p>
         </div>
         <!-- 第3张福字剪纸卡片 -->
         <div class="archive-card">
-            <div class="card-image-placeholder">【此处替换：福字作品图片3】</div>
-            <h4><strong>Artwork Name:</strong> To be filled</h4>
-            <p><strong>Artwork description:</strong> To be filled</p>
-            <p class="source-note"><strong>Source information:</strong> To be filled (Artist, institution, original link)</p>
+            <div class="card-image-placeholder">
+                <img src="http://i2.chinanews.com.cn/simg/ypt/2026/260630/68872cdd-bc05-4a6f-8d87-ea49e3a23dda_zsite.jpg" alt="Fu paper-cut artwork 3">
+        </div>
+            <h4><strong>Artwork Name:</strong> "Fu Yun Xiang Cheng" (Blessings and Auspiciousness)</h4>
+            <p><strong>Artwork description:</strong> This paper-cut is created by inheritor Chen Yimin. The work centers on the Chinese character "Fu". The strokes of the fu character are integrated with traditional Fujian landmarks, including ancient pagodas and tulou buildings. It adopts the delicate style of Zhangpu paper-cut from Fujian. The work combines local cultural features with the fu culture, conveying people’s wishes for good fortune and a happy life.</p>
+            <p class="source-note"><strong>Source information:</strong> - Artist: Chen Yimin (陈艺敏)<br>- Origin: Zhangpu, Fujian, China<br>- Date: June 30, 2026<br>- In-text citation: China News Service, 2026</p>
         </div>
 
         <h3>Chinese Zodiac Paper Cutting</h3>
@@ -228,209 +414,126 @@
 <div id="panel-process" class="panel">
     <div class="container">
         <h2>Making and Digital Documentation</h2>
-        <p>Digital sources record different aspects of paper-cutting. This section compares a photograph of Li Shoubai’s rabbit paper-cut, Scarlett PANG’s illustrated rat tutorial, and Pika Shuwu’s snake video. Together, they show how a finished image, step-by-step illustrations, and moving footage document appearance and technique—and where further explanation is needed (Pika Shuwu, 2020; Scarlett PANG, 2026; Sina, 2023).</p>
-          <!-- 上面的表格粘贴在这里 -->
-<table border="1" cellpadding="10" style="width:90%; border-collapse: collapse;">
-  <thead>
-    <tr>
-      <th>Selected source</th>
-      <th>What it records</th>
-      <th>What remains unclear</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <!-- 第一行：左侧兔子剪纸图片 -->
-      <td>
-        <div class="img-row">
-          <img src="https://imagetourl.im/api/storage/file?key=anon%2F-%2F8208285039712-90b95470-713b-4c60-a883-87c0294cc4b0-b4f2e98b13b2d9a3acceaa27d711743b.jpg" alt="Rabbit paper-cut">
-          <div>Finished-work photograph<br> Qian Tu Si Jin<br> (Sina, 2023)</div>
-        </div>
-      </td>
-      <td>The completed rabbit pattern and its<br> visual details.</td>
-      <td>The cutting steps, hand movements, and<br> motif’s meaning are not explained on<br> this page.</td>
-    </tr>
-    <tr>
-      <!-- 第二行：鼠剪纸图片 -->
-      <td>
-        <div class="img-row">
-          <img src="https://imagetourl.im/api/storage/file?key=anon%2F-%2F8208284895753-e494a34d-5248-4bd5-b32a-40d5d3757dc8-8e67fe2c0216838decc1dbdf4e7364d3.jpg" alt="Rat paper-cut tutorial">
-          <div>Illustrated tutorial<br> Rat Zodiac Paper-Cut<br> (Scarlett PANG, 2026)</div>
-        </div>
-      </td>
-      <td>Pattern designs, folding and cutting<br> steps, tool tips, and the finished work.</td>
-      <td>Still images do not show continuous<br> hand movements; the post does not<br> explain the motif’s cultural meaning.</td>
-    </tr>
-    <tr>
-      <!-- 第三行：蛇剪纸图片 -->
-      <td>
-        <div class="img-row">
-          <img src="https://imagetourl.im/api/storage/file?key=anon%2F-%2F8208284863045-801b1f30-91c4-483b-b72f-37720df51265-3cddd2e8872d771a7e564744f4a88c53.jpg" alt="Snake paper-cut video">
-          <div>Video tutorial<br> Chinese Zodiac The Snake<br> (Pika Shuwu, 2020)</div>
-        </div>
-      </td>
-      <td>Visible tracing and cutting movements as<br> the snake pattern takes shape.</td>
-      <td>The webpage description does not<br> explain the motif’s meaning or its festival<br> use.</td>
-    </tr>
-  </tbody>
-</table>
-        <p><strong>What the comparison shows</strong></p>
-        <p>The photograph allows viewers to examine the finished rabbit design, but it cannot show the order in which the paper was cut. The illustrated tutorial makes the rat paper-cut easier to follow by showing patterns and successive steps, although movement between those steps remains invisible. In the snake video, viewers can observe the maker’s hands while the pattern is drawn and cut. Its webpage description, however, gives no cultural explanation of the snake motif. These observations concern these three sources; they do not mean that photographs or videos can never include such explanations. A caption, interview, or narration could add them. By linking different forms of documentation, this archive gives visitors a fuller view of appearance and technique. Additional information from artists or reliable cultural sources is still needed to explain why the motifs matter.<p>
+
+        <!-- 表格1：2行3列 -->
+        <table border="1" cellpadding="10" style="width:100%; border-collapse: collapse; margin:30px 0;">
+            <thead>
+                <tr>
+                    <!-- 表头跨3列，立体居中 -->
+                    <th colspan="3" style="font-size:20px; text-align:center; text-shadow: 1px 1px 2px #999, -1px -1px 1px #fff;">Photo :Shows the finished design and its details. The description can explain its meaning, use, and source.</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="text-align:center;">
+                        <img src="https://img.remit.ee/i/fpolRmQbIcWc" alt="image1" style="max-width:100%; max-height:220px; object-fit:contain;">
+                    </td>
+                    <td style="text-align:center;">
+                        <img src="https://img.remit.ee/i/SfNxQyRcCnEQ" alt="image2" style="max-width:100%; max-height:220px; object-fit:contain;">
+                    </td>
+                    <td style="text-align:center;">
+                        <img src="https://img.remit.ee/i/bqpz1NqjHlxq" alt="image3" style="max-width:100%; max-height:220px; object-fit:contain;">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <!-- 表格2：2行4列 -->
+        <table border="1" cellpadding="10" style="width:100%; border-collapse: collapse; margin:30px 0;">
+            <thead>
+                <tr>
+                    <th colspan="4" style="font-size:20px; text-align:center; text-shadow: 1px 1px 2px #999, -1px -1px 1px #fff;">Illustrated tutorial:Pairs pictures with instructions, making it easy to find and review each step.</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="text-align:center;">
+                        <img src="https://img.remit.ee/i/OZFQ4UxS2aTF" alt="img‑a" style="max-width:100%; max-height:220px; object-fit:contain;">
+                    </td>
+                    <td style="text-align:center;">
+                        <img src="https://img.remit.ee/i/eXHIUlKVo4a5" alt="img‑b" style="max-width:100%; max-height:220px; object-fit:contain;">
+                    </td>
+                    <td style="text-align:center;">
+                        <img src="https://img.remit.ee/i/E5d9nTb7dkwB" alt="img‑c" style="max-width:100%; max-height:220px; object-fit:contain;">
+                    </td>
+                    <td style="text-align:center;">
+                        <img src="https://img.remit.ee/i/vuJm4sKycvVQ" alt="img‑d" style="max-width:100%; max-height:220px; object-fit:contain;">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <!-- 表格3：2行4列 -->
+        <table border="1" cellpadding="10" style="width:100%; border-collapse: collapse; margin:30px 0;">
+            <thead>
+                <tr>
+                    <th colspan="4" style="font-size:20px; text-align:center; text-shadow: 1px 1px 2px #999, -1px -1px 1px #fff;">Video tutorial:Shows hand movements and the cutting process continuously. If it includes narration, it can explain the steps and techniques in more detail.</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="text-align:center;">
+                        <img src="https://img.remit.ee/i/hZUxjC04iOlf" alt="img‑1" style="max-width:100%; max-height:220px; object-fit:contain;">
+                    </td>
+                    <td style="text-align:center;">
+                        <img src="https://img.remit.ee/i/Vf9sb8o3k24k" alt="img‑2" style="max-width:100%; max-height:220px; object-fit:contain;">
+                    </td>
+                    <td style="text-align:center;">
+                        <img src="https://img.remit.ee/i/6JO2L8Jq1rQv" alt="img‑3" style="max-width:100%; max-height:220px; object-fit:contain;">
+                    </td>
+                    <td style="text-align:center;">
+                        <img src="https://img.remit.ee/i/XU9ttanLKuc6" alt="img‑4" style="max-width:100%; max-height:220px; object-fit:contain;">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
     </div>
 </div>
 
-<!--【跨文化传播面板】 -->
+
+<!--【跨文化传播面板 —— 现已改为世界剪纸地图】 -->
 <div id="panel-cross" class="panel">
     <div class="container">
-        <h2>Cross Cultural Communication</h2><br><br>
-        <p><strong>Why compare these cases</strong><br><br>A paper-cut can travel, but its meaning may need translation. We compare three presentations from China, the United Kingdom and the United States to see how publishers explain Chinese paper cutting to different audiences. The Chinese and British examples both discuss fish and abundance; the American example adds a comparison of teaching methods through window flowers and the character for Spring. These are related traditions, not identical objects. Our question is how language, background information and opportunities to participate change across these settings.</p><br><br>
-        <h3>Paper-Cut Sources in world</h3>
-        <table border="1" cellpadding="10" style="width:90%; margin: 20px auto; border-collapse: collapse;">
-        <!-- 中国庄河剪纸资料 -->
-        <tbody>
-            <tr style="background-color:#f2e9da;">
-            <th style="width:22%;">Country / Publisher</th>
-            <td>China Local knowledge and symbolism</td>
-            </tr>
-            <tr>
-            <th>Publisher &amp; Region</th>
-            <td>Liaoning Provincial Center for Cultural Heritage Protection; republished by the China Intangible Cultural Heritage Network and Digital Museum. Zhuanghe, Liaoning, China.</td>
-            </tr>
-            <tr style="background-color:#f8e4e4;">
-            <th>Date</th>
-            <td>March 25, 2022.</td>
-            </tr>
-            <tr>
-            <th>Audience</th>
-            <td>Chinese‑reading heritage readers and craft learners, inferred from the language and detailed regional account.</td>
-            </tr>
-            <tr style="background-color:#f8e4e4;">
-            <th>Language</th>
-            <td>Chinese.</td>
-            </tr>
-            <tr>
-            <th>Patterns and making knowledge</th>
-            <td>Lotus and fish express annual abundance. The article also covers peonies, auspicious characters, scissors, knives and ways of securing layered paper.</td>
-            </tr>
-            <tr style="background-color:#f8e4e4;">
-            <th>Source Link</th>
-            <td><a href="https://www.ihchina.cn/project_details/24769.html" target="_blank">https://www.ihchina.cn/project_details/24769.html</a></td>
-            </tr>
-            <!-- 图片行 -->
-            <tr>
-            <th>Image</th>
-            <td><img src="https://cdn.phototourl.com/member/2026-10-11-4d0dc31e-9213-45f0-8cf9-c8cf92ad5ed6.jpg" alt="Scissor‑cutting scene of Zhuanghe paper‑cut" style="max-width:320px; height:auto;"></td>
-            </tr>
-        </tbody>
-        </table>
-
-        <p>Scissor cutting illustrated in the Zhuanghe heritage article.<br>
-        Image source: China Intangible Cultural Heritage Network and Digital Museum; article sourced from the Liaoning Provincial Center for Cultural Heritage Protection. Photographer and image date not stated.</p>
-
-        <table border="1" cellpadding="10" style="width:90%; margin: 20px auto; border-collapse: collapse;">
-        <!-- 英国资料 -->
-        <tbody>
-            <tr style="background-color:#f2e9da;">
-            <th style="width:22%;">Country / Publisher</th>
-            <td>United Kingdom</td>
-            </tr>
-            <tr>
-            <th>Authors & Region</th>
-            <td>Bryan Sitch, Naomi Kashiwagi and Fang Zong, on Manchester Museum’s Hello Future blog. Manchester, United Kingdom.</td>
-            </tr>
-            <tr style="background-color:#f8e4e4;">
-            <th>Date</th>
-            <td>October 21, 2021.</td>
-            </tr>
-            <tr>
-            <th>Audience</th>
-            <td>English-reading museum followers, inferred from the blog; Chinese university students are documented contributors.</td>
-            </tr>
-            <tr style="background-color:#f8e4e4;">
-            <th>Language</th>
-            <td>English, with Chinese characters and pronunciation.</td>
-            </tr>
-            <tr>
-            <th>Patterns and making knowledge</th>
-            <td>A fish paper-cut introduces the sound connection between fish (鱼, yú) and surplus (余, yú). The account also includes a student-made Cowherd and Weaver Girl paper-cut.</td>
-            </tr>
-            <tr style="background-color:#f8e4e4;">
-            <th>Source Link</th>
-            <td><a href="https://mmhellofuture.wordpress.com/2021/10/21/encountering-the-phoenix-and-other-things/" target="_blank">https://mmhellofuture.wordpress.com/2021/10/21/encountering-the-phoenix-and-other-things/</a></td>
-            </tr>
-            <!-- ✅ 新增图片行 -->
-            <tr>
-                <th>Image</th>
-                <td><img src="https://mmhellofuture.wordpress.com/wp-content/uploads/2021/10/fish-paper-cut.jpg" alt="Fish paper-cut from Manchester Museum" style="max-width:320px; height:auto;"></td>
-            </tr>
-        </tbody>
-        </table>
-
-          <p>A fish paper-cut discussed in Manchester Museum’s consultation account.<br>
-            Photo: Bret Gaunt, Derbyshire County Council – Buxton Museum and Art Gallery. Published on Hello Future.</p>
-
-        <br><br>
-
-        <table border="1" cellpadding="10" style="width:90%; margin: 20px auto; border-collapse: collapse;">
-        <!-- 美国资料 -->
-        <tbody>
-            <tr style="background-color:#f2e9da;">
-            <th style="width:22%;">Country / Publisher</th>
-            <td>United States</td>
-            </tr>
-            <tr>
-            <th>Authors & Region</th>
-            <td>Museum of Arts and Design. New York City, United States.</td>
-            </tr>
-            <tr style="background-color:#f8e4e4;">
-            <th>Date</th>
-            <td>Workshop advertised for February 13, 2010; webpage publication date not stated.</td>
-            </tr>
-            <tr>
-            <th>Audience</th>
-            <td>Drop-in museum visitors and beginner participants, inferred from the activity format.</td>
-            </tr>
-            <tr style="background-color:#f8e4e4;">
-            <th>Language</th>
-            <td>English webpage; Chinese–English interpretation advertised for the workshop.</td>
-            </tr>
-            <tr>
-            <th>Patterns and making knowledge</th>
-            <td>Repeated folding and cutting to make window flowers and the character for Spring, connected to Lunar New Year.</td>
-            </tr>
-            <tr style="background-color:#f8e4e4;">
-            <th>Source Link</th>
-            <td><a href="https://madmuseum.org/events/think-global-cut-local" target="_blank">https://madmuseum.org/events/think-global-cut-local</a></td>
-            </tr>
-            <!-- ✅ 新增图片行 -->
-            <tr>
-                <th>Image</th>
-                <td><img src="https://madmuseum.org/sites/default/files/styles/5_x_3/public/2011/02/paper_cutting.ashx_.jpg" alt="Auspicious character paper-cut for MAD workshop" style="max-width:320px; height:auto;"></td>
-            </tr>
-        </tbody>
-        </table>
-
-        <br>
-
-        <p>Auspicious-character paper-cut used to illustrate MAD’s workshop announcement.<br>
-        Image source: Museum of Arts and Design. Creator and image date not stated.</p>
-
+        <h2>Cross‑Cultural Paper‑cut Art Map</h2>
+        <p style="margin-bottom:20px;">Click the red markers on the map to view local paper‑cut art introduction.</p>
+        <div class="map-wrap">
+            <!-- 世界地图底图 -->
+            <img class="world-map-img" src="https://www.dljs.net/uploads/allimg/2008/0JIAV9-0.jpg" alt="World map">
+            <!-- 点位坐标 -->
+            <div class="marker" style="top:30%; left:38%;" data-id="china"><span>China</span></div>
+            <div class="marker" style="top:15%; left:15%;" data-id="uk"><span>UK</span></div>
+            <div class="marker" style="top:21%; left:84%;" data-id="newyork"><span>New York</span></div>
+            <div class="marker" style="top:24%; left:81%;" data-id="washington"><span>Washington</span></div>
+            <div class="marker" style="top:63%; left:46%;" data-id="australia"><span>Australia</span></div>
+            <div class="marker" style="top:48%; left:36%;" data-id="singapore"><span>Singapore</span></div>
+            <div class="marker" style="top:13%; left:70%;" data-id="canada"><span>Canada</span></div>
+            <div class="marker" style="top:20%; left:16%;" data-id="swiss"><span>Switzerland</span></div>
+        </div>
+    </div>
+    <!-- 弹窗遮罩与弹窗本体，放在container外面，fixed定位 -->
+    <div class="mask" id="mask"></div>
+    <div class="popup" id="popup">
+        <div class="popup-header">
+            <div class="popup-title" id="pop-title"></div>
+            <button class="close-btn" id="close">×</button>
+        </div>
+        <div id="pop-media-wrap" style="margin-bottom:16px;"></div>
+        <div class="popup-desc" id="pop-desc"></div>
     </div>
 </div>
+
 
 <!--【研究发现面板】 -->
-<div id="panel-findings" class="panel">
-    <div class="container">
-        <h2>Research Findings</h2>
-        <p>【待成员6提交内容】</p>
-    </div>
-</div>
+
 
 <!--【资料来源面板】 -->
 <div id="panel-source" class="panel">
     <div class="container">
-        <h2>Reference</h2>
-        <p>【待成员6提交APA7参考文献】</p>
+        <h2>Reference</h2><br><br>
+        <p>Bai, Y. (2024, February 15). Qiaoshou jian chu xingfu hua [Skillful hands cut flowers of happiness]. Gansu Daily. https://gs.people.com.cn/n2/2024/0215/c183283-40746439.html<br><br>Beijing Jianwujie Culture Co., Ltd. (2020, February 26). San yang kai tai [Three sheep usher in good fortune] [Paper-cut artwork]. https://www.jianwujie.com/projects/sykt.html<br><br>China Intangible Cultural Heritage Network and Digital Museum. (n.d.). Hands cutting paper with scissors [Photograph]. https://www.ihchina.cn/Uploads/Picture/2022/03/25/s623d5c65eed91.jpg<br><br>China.org.cn. (2018, February 16). Xinchun zou jiceng: Jianzhi dashi: Zhijian shang de chunjie [Spring Festival at the grassroots: A paper-cutting master and the Spring Festival at his fingertips]. Cyberspace Administration of China. https://www.cac.gov.cn/2018-02/16/c_1122421898.html<br><br>China Paper Cutting Museum. (n.d.). Zhang Xiufang jianzhi yishu zhan [The paper-cuts of Zhang Xiufang]. Google Arts & Culture. https://artsandculture.google.com/story/3AUhL4C2blpJLA?hl=zh-CN<br><br>Farmers' Daily. (2024, December 10). Shenyi chenggong! Kan chunjie de N zhong dakai fangshi [Inscription success! N ways to celebrate the Spring Festival]. <br><br>Xinhua Net app. https://app.xinhuanet.com/news/article.html?articleId=5bd8cc777f8041f9775b62cf5dd4aabd<br><br>Gaunt, B. (n.d.). Chinese paper cut of a fish [Photograph]. Hello Future. https://mmhellofuture.wordpress.com/wp-content/uploads/2021/10/fish-paper-cut.jpg<br><br>Lecture 1: Foundations—Media, identity and the transnational turn [Course slides]. (n.d.). 6063MP Digital Media—Transnational Identities.<br><br>Li, S. (2023, January 23). Qian tu si jin [A bright future for the rabbit] [Paper-cut artwork]. <br><br>Sina Hong Kong. https://portal.sina.com.hk/finance/sina/2023/01/23/69920/%E4%B9%BE%E5%85%94%E4%BC%BC%E9%8C%A6%EF%BC%88%E5%89%AA%E7%B4%99%EF%BC%89/<br><br>Liaoning Provincial Center for Cultural Heritage Protection. (2022, March 25). Chuantong gongyi zhenxing mulu: Jianzhi (Zhuanghe jianzhi) [Traditional craft revitalisation catalogue: Paper cutting (Zhuanghe paper cutting)]. China Intangible Cultural Heritage Network and Digital Museum. https://www.ihchina.cn/project_details/24769.html<br><br>Museum of Arts and Design. (2010). Think global, cut local. https://madmuseum.org/events/think-global-cut-local<br><br>Museum of Arts and Design. (n.d.). Chinese paper-cut featuring auspicious Chinese characters [Photograph]. https://madmuseum.org/sites/default/files/styles/5_x_3/public/2011/02/paper_cutting.ashx_.jpg<br><br>Pang, S. (2026). Yuanchuang xiangao: Shi'er shengxiao xilie tuanhua jianzhi—Zi shu [Original line drawing: Zodiac paper-cutting series—Rat] [Images]. Xiaohongshu. https://xhslink.cn/o/6qvRnTZ8whP<br><br>Pika Shuwu. (2020, March 28). Li Hui laoshi dai ni zuo shougong: Shi'er shengxiao—Si she [Teacher Li Hui teaches crafts: Chinese zodiac—Snake] [Video]. Bilibili. https://www.bilibili.com/video/BV1zV411f7jy/<br><br>Shanghai Xuhui. (2025, February 4). ‘Shanghai jianzhi’ rang ‘nianwei’ UP! [Shanghai paper-cutting brings out the New Year spirit]. The Paper. https://thirdpage.thepaper.cn/h5/jrtt/30081068<br><br>Sitch, B., Kashiwagi, N., & Zong, F. (2021, October 21). Encountering the phoenix (and other things). Hello Future. https://mmhellofuture.wordpress.com/2021/10/21/encountering-the-phoenix-and-other-things/<br><br>Southeast Net. (2023, December 4). Zhou Dongmei: Pucheng paper-cutting inheritor creates a ‘Fu’ paper-cut with koi and peony.<br><br>UNESCO. (2009). Chinese paper-cut. https://ich.unesco.org/en/RL/chinese-paper-cut-00219<br><br>Weinan Culture and Tourism Bureau. (2026, January 27). Blessings arrive immediately [Paper-cut artwork by Cao Jing].<br><br>Zhang, J. (2026, June 30). Jianzhi chuanren Chen Yimin: Jiangxin qiaoshou jian chu wanqian fu yun [Paper-cutting inheritor Chen Yimin: Ingenious craftsmanship creates thousands of charming blessings]. China News Service. https://www.chinanews.com/sh/2026/06-30/10649861.shtml<br><br>Zheng, F. (2022, December 4). Zheng Feiyan: ‘Mao tu zhao feng nian’ jianzhi chuangzuo tan [Zheng Feiyan on creating the paper-cut ‘The rabbit heralds a bountiful year’]. Cultural Arts News. https://www.sohu.com/a/613513612_556618</p>
     </div>
 </div>
 
@@ -448,6 +551,110 @@ navLinks.forEach(link=>{
         window.scrollTo(0,0); //切换面板自动滚回页面顶部
     }
 })
+        // =========世界剪纸地图弹窗JS=========
+        const artData = {
+            china:{
+                title:"Chinese Paper‑cut",
+                mediaType:"image",
+                mediaSrc:"https://cdn.phototourl.com/member/2026-10-11-4d0dc31e-9213-45f0-8cf9-c8cf92ad5ed6.jpg",
+                desc:"Liaoning Provincial Center for Cultural Heritage Protection; republished by the China Intangible Cultural Heritage Network and Digital Museum. Zhuanghe, Liaoning, China.Lotus and fish express annual abundance. The article also covers peonies, auspicious characters, scissors, knives and ways of securing layered paper."
+            },
+            uk:{
+                title:"British Silhouette Paper‑cut",
+                mediaType:"image",
+                mediaSrc:"https://mmhellofuture.wordpress.com/wp-content/uploads/2021/10/fish-paper-cut.jpg",
+                desc:"Bryan Sitch, Naomi Kashiwagi and Fang Zong, on Manchester Museum’s Hello Future blog. Manchester, United Kingdom.A fish paper-cut introduces the sound connection between fish (鱼, yú) and surplus (余, yú). The account also includes a student-made Cowherd and Weaver Girl paper-cut."
+            },
+            newyork:{
+                title:"Paper‑cut Art in New York, USA",
+                mediaType:"image",
+                mediaSrc:"https://madmuseum.org/sites/default/files/styles/5_x_3/public/2011/02/paper_cutting.ashx_.jpg",
+                desc:"Workshop advertised for February 13, 2010; webpage publication date not stated.Repeated folding and cutting to make window flowers and the character for Spring, connected to Lunar New Year."
+            },
+            washington:{
+                title:"Paper‑cut Art in Washington, USA",
+                mediaType:"image",
+                mediaSrc:"https://img.remit.ee/i/IbIdLxJ01Udf",
+                desc:"This teaching resource introduces three generations of paper-cutting practitioners who attended the Smithsonian Folklife Festival. The webpage embeds an interview video and discusses cultural heritage, artistic expression, and the sharing of skills. It also explains the significance of red paper and offers discussion questions. The case is useful for showing how a museum turns craft knowledge into educational material, while giving audiences access to practitioners’ perspectives (Smithsonian National Museum of Asian Art, n.d.)."
+            },
+            australia:{
+                title:"Australian Paper‑cut Art",
+                mediaType:"image",
+                mediaSrc:"https://img.remit.ee/i/qGjlwDmDkZ5C",
+                desc:"Tianli Zu extends paper cutting into installations, light, shadow, and animation. The Shadow World exhibition page provides artwork images, while a university-hosted talk describes her use of paper cutting to explore Chinese migrant histories in Australia. Together, these sources support an analysis of cultural adaptation: an inherited technique becomes a way to tell local stories through new media (Western Sydney University, n.d.-a, n.d.-b)."
+            },
+            singapore:{
+                title:"Singapore Paper‑cut Art",
+                mediaType:"image",
+                mediaSrc:"https://www.sysnmh.org.sg/en/-/media/sys/images/event/cny-2019/3d-festive-paper-cutting.jpg",
+                desc:"The festival program presented paper cutting as an accessible public activity. It advertised a paper-sculpting workshop inspired by Chinese paper cutting and a separate three-dimensional festive paper-cutting activity. The case shows how traditional techniques can inspire new craft formats."
+            },
+            canada:{
+                title:"Canadian Paper‑cut Art",
+                mediaType:"image",
+                mediaSrc:"https://img.remit.ee/i/Lvg8wYDkz5cY",
+                desc:"Meegan Lim’s website presents Chinese paper cutting as both a creative activity and an opportunity for community connection. The workshop introduces basic techniques, patterns, and cultural significance. Its photograph clearly shows red paper-cuts with a snake, flowers, and a double-happiness character. This makes the case useful for comparing auspicious motifs across regions (Lim, n.d.)."
+            },
+            swiss:{
+                title:"Swiss Paper‑cut (Scherenschnitt)",
+                mediaType:"image",
+                mediaSrc:"https://admin.bka.ch/img/6995d0bad90d4241810451.jpg",
+                desc:"This exhibition in Switzerland brought paper-cuts from the Wyss Collection into dialogue with Chinese works from the University Museum and Art Gallery in Hong Kong. Its listing explains the comparison between shared techniques and distinctive cultural identities, and includes artwork images. The case provides concrete evidence of cross-regional exhibition collaboration (BKA, n.d.)."
+            }
+        };
+
+        const markerList = document.querySelectorAll(".marker");
+        const popup = document.getElementById("popup");
+        const mask = document.getElementById("mask");
+        const popTitle = document.getElementById("pop-title");
+        const popMediaWrap = document.getElementById("pop-media-wrap");
+        const popDesc = document.getElementById("pop-desc");
+        const closeBtn = document.getElementById("close");
+
+        //打开弹窗
+        markerList.forEach(marker=>{
+            marker.addEventListener("click",()=>{
+                const id = marker.dataset.id;
+                const data = artData[id];
+                popTitle.innerText = data.title;
+                popDesc.innerText = data.desc;
+                popMediaWrap.innerHTML = ""; //清空旧媒体
+
+                if(data.mediaType === "image"){
+                    const img = document.createElement("img");
+                    img.className = "popup-img";
+                    img.src = data.mediaSrc;
+                    img.alt = data.title + " paper‑cut artwork";
+                    popMediaWrap.appendChild(img);
+                }else if(data.mediaType === "mp4"){
+                    const video = document.createElement("video");
+                    video.className = "popup-video";
+                    video.src = data.mediaSrc;
+                    video.controls = true;
+                    popMediaWrap.appendChild(video);
+                }else if(data.mediaType === "youtube"){
+                    const iframe = document.createElement("iframe");
+                    iframe.className = "popup-youtube-iframe";
+                    iframe.src = data.mediaSrc;
+                    iframe.allow = "accelerometer; autoplay; clipboard‑write; encrypted‑media; gyroscope; picture‑in‑picture";
+                    iframe.allowFullscreen = true;
+                    popMediaWrap.appendChild(iframe);
+                }
+
+                mask.style.display = "block";
+                popup.style.display = "block";
+            })
+        })
+
+        //关闭弹窗，销毁iframe/video，停止播放
+        function closePop(){
+            mask.style.display = "none";
+            popup.style.display = "none";
+            popMediaWrap.innerHTML = "";
+        }
+        closeBtn.addEventListener("click", closePop);
+        mask.addEventListener("click", closePop);
+
 </script>
 
 </body>
